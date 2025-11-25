@@ -1,0 +1,15 @@
+import java.util.*;
+
+public class ListTask3 {
+    public static void keepFirstOccurrences(ArrayList<Integer> list) {
+        HashSet<Integer> seen = new HashSet<>(); //HashSet — это коллекция в Java, которая хранит только уникальные элементы
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Integer number = iterator.next();
+            if (!seen.add(number)) { // если число уже встречалось, удаляем
+                iterator.remove();
+            }
+        }
+    }
+}
+
