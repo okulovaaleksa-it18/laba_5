@@ -1,0 +1,55 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class PersonProcessor {
+
+    //читает файл и превращает строки в список Person
+    public List<Person> readPeople(String filename) throws IOException {
+
+        return Files.lines(Paths.get(filename))
+                .map(String::trim)// убираем лишние пробелы
+                .filter(line -> !line.isBlank()) // пропускаем пустые строки
+                .filter(line -> line.contains(":")) // оставляем только строки формата имя:число
+                .map(this::parsePerson)  // превращаем строку в объект Person
+                .collect(Collectors.toList()); // собираем людей в список
+    }
+
+    //Разбор строки "Имя:Номер"
+    private Person parsePerson(String line) {
+
+        //Разбиваем строку по двоеточию
+        String[] parts = line.split(":");
+
+        String name = parts[0];
+        Integer number = null;
+
+        //Если в строке есть номер — пытаемся его прочитать
+        if (parts.length == 2 && !parts[1].isBlank()) {
+            try {
+                number = Integer.parseInt(parts[1].trim());
+            } catch (NumberFormatException ignored) {
+                // Номер был не числом
+                number = null;
+            }
+        }
+
+        return new Person(name, number);
+    }
+
+    // Группировка людей по номеру
+    public Map<Integer, List<String>> groupByNumber(List<Person> people) {
+
+        return people.stream()
+                .filter(p -> p.getNumber() != null)// оставляем только людей с номером
+                .collect(Collectors.groupingBy(
+                        Person::getNumber,// ключ Map — номер
+                        Collectors.mapping(
+                                Person::getName, // значение — имя
+                                Collectors.toList() // собираем в список
+                        )
+                ));
+    }
+}
