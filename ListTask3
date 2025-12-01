@@ -1,15 +1,16 @@
+package ru.okulova.lab5.lists;
+
 import java.util.*;
 
 public class ListTask3 {
-    public static void keepFirstOccurrences(ArrayList<Integer> list) {
-        HashSet<Integer> seen = new HashSet<>(); //HashSet — это коллекция в Java, которая хранит только уникальные элементы
-        Iterator<Integer> iterator = list.iterator();
+    public static <T> void keepFirstOccurrences(List<T> list) {
+        HashSet<T> seen = new HashSet<>(); //HashSet — это коллекция в Java, которая хранит только уникальные элементы
+        Iterator<T> iterator = list.iterator();
         while (iterator.hasNext()) {
-            Integer number = iterator.next();
-            if (!seen.add(number)) { // если число уже встречалось, удаляем
+            T element = iterator.next();
+            if (!seen.add(element)) { //если элемент уже встречался, удаляем
                 iterator.remove();
             }
         }
     }
 }
-
