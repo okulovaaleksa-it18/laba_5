@@ -1,8 +1,25 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+    package ru.okulova.lab5.main;
+    import ru.okulova.lab5.cats.Counter;
+    import ru.okulova.lab5.cats.MeowCounter;
+    import ru.okulova.lab5.lists.ListTask3;
+    import ru.okulova.lab5.lists.QueueTask6;
+    import ru.okulova.lab5.lists.WordsChars;
+    import ru.okulova.lab5.math.Fraction;
+    import ru.okulova.lab5.math.FractionCashed;
+    import ru.okulova.lab5.math.check;
+    import ru.okulova.lab5.cats.Cat;
+    import ru.okulova.lab5.cats.FunsMeow;
+    import ru.okulova.lab5.lines.Point;
+    import ru.okulova.lab5.lines.Polyline;
+    import ru.okulova.lab5.people.Athlete;
+    import ru.okulova.lab5.people.Person;
+    import ru.okulova.lab5.people.PersonProcessor;
+    
+    import java.io.IOException;
+    import java.util.*;
+    import java.util.stream.Collectors;
+    
+    import static ru.okulova.lab5.lists.ListTask3.keepFirstOccurrences;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,32 +44,57 @@ public class Main {
 
         switch (choice) {
             case(1): {
-                Fraction.menu(check);
+                System.out.println("=== Обычная дробь ===");
+                Fraction f1 = new Fraction(1, -2);
+                Fraction f2 = new Fraction(-1, 2);
+
+                System.out.println("f1 = " + f1);
+                System.out.println("f2 = " + f2);
+
+                System.out.println("f1 == f2 ? " + f1.equals(f2));
+                System.out.println("Вещественное значение f1: " + f1.getValue());
+
+                System.out.println("=== Дробь c кэшированием ===");
+                FractionCashed f3 = new FractionCashed(3, 4);
+
+                System.out.println("f3 = " + f3);
+                System.out.println("Первый вызов: " + f3.getValue());  // вычисление
+                System.out.println("Второй вызов: " + f3.getValue());  // берёт из кэша
+
+                f3.setNumerator(6);
+                System.out.println("Меняем числитель f3 = " + f3);
+                System.out.println("После изменения числителя: " + f3.getValue());
                 break;
             }
             case(2): {
-                Cat m = new Cat("Йося");
+                Cat cat = new Cat("Йося");
 
-                FunsMeow.meowsCare(m);
+                // создаём внешний счётчик
+                Counter counter = new Counter();
 
-                System.out.println("Кот мяукнул " + m.getMeowCount() + " раз");
+                // создаём обёртку, которая считает мяуканья
+                MeowCounter wrappedCat = new MeowCounter(cat, counter);
+
+                // запускаем механику мяуканья
+                FunsMeow.meowsCare(wrappedCat);
+
+                // выводим количество
+                System.out.println("Кот мяукнул " + counter.getCount() + " раз");
                 break;
             }
             case(3): {
-                ArrayList<Integer> numbers = new ArrayList<>();
-                numbers.add(5);
-                numbers.add(3);
-                numbers.add(7);
-                numbers.add(5);
-                numbers.add(3);
-                numbers.add(9);
+                List<String> words = new ArrayList<>(Arrays.asList("apple", "banana", "apple", "orange", "banana"));
+                System.out.println("Исходный список: " + words);
+                keepFirstOccurrences(words);
+                System.out.println("Список после: " + words);
 
+                List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 2, 3, 1, 4));
                 System.out.println("Исходный список: " + numbers);
+                keepFirstOccurrences(numbers);
+                System.out.println("Список после: " + numbers);
 
-                ListTask3.keepFirstOccurrences(numbers);
-
-                System.out.println("Список без повторов: " + numbers);
                 break;
+            }
             }
             case(4): {
                 System.out.print("Введите количество спортсменов: ");
