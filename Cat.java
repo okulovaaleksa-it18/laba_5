@@ -1,7 +1,8 @@
+package ru.okulova.lab5.cats;
+
 public class Cat implements Meowable {
 
     private String name;     // имя кота
-    private int meowCount = 0; // счетчик мяуканий
 
     public Cat(String name) {
         this.name = name;
@@ -10,12 +11,7 @@ public class Cat implements Meowable {
     @Override
     public void meow() {
         System.out.println(name + ": мяу!");
-        meowCount++;
-    }
 
-    //кол-во мяуканья
-    public int getMeowCount() {
-        return meowCount;
     }
 
     @Override
